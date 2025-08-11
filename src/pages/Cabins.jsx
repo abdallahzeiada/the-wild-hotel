@@ -3,8 +3,8 @@ import CabinTable from "../features/cabins/CabinTable";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 import Button from "../ui/Button";
-import { useState } from "react";
 import CreateCabinForm from "../features/cabins/CreateCabinForm";
+import AddCabin from "../features/cabins/AddCabin";
 const Container = styled.div`
   max-width: 130rem;
   margin: 0 auto;
@@ -14,7 +14,6 @@ const Container = styled.div`
 `;
 
 function Cabins() {
-  const [showModal, setShowModal] = useState(false);
 
   return (
     <Container>
@@ -24,7 +23,7 @@ function Cabins() {
       </Row>
       <Row type="vertical">
         <CabinTable />
-     
+        <AddCabin />
       </Row>
     </Container>
   );
