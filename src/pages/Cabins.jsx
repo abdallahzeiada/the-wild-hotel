@@ -1,0 +1,33 @@
+import styled from "styled-components";
+import CabinTable from "../features/cabins/CabinTable";
+import Heading from "../ui/Heading";
+import Row from "../ui/Row";
+import Button from "../ui/Button";
+import { useState } from "react";
+import CreateCabinForm from "../features/cabins/CreateCabinForm";
+const Container = styled.div`
+  max-width: 130rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
+
+function Cabins() {
+  const [showModal, setShowModal] = useState(false);
+
+  return (
+    <Container>
+      <Row type="horizontal">
+        <Heading as="h1">All cabins</Heading>
+        <p>Filter / Sort</p>
+      </Row>
+      <Row type="vertical">
+        <CabinTable />
+     
+      </Row>
+    </Container>
+  );
+}
+
+export default Cabins;
