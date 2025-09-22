@@ -73,7 +73,7 @@ function Table({ children, columns }) {
 function Header({ children }) {
   const { columns } = useContext(TableContext);
   return (
-    <StyledHeader as="thead" role="row" columns={columns}>
+    <StyledHeader as="header" role="row" columns={columns}>
       {children}
     </StyledHeader>
   );

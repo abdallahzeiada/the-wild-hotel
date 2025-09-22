@@ -1,4 +1,6 @@
+import { createContext, useContext, useState } from "react";
 import styled from "styled-components";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 const StyledMenu = styled.div`
   display: flex;
@@ -31,6 +33,7 @@ const StyledList = styled.ul`
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
+  z-index: 1000;
 
   right: ${(props) => props.position.x}px;
   top: ${(props) => props.position.y}px;
@@ -61,3 +64,76 @@ const StyledButton = styled.button`
   }
 `;
 
+const MenusContext = createContext();
+
+function Menus({ children }) {
+  const [position, setPosition] = useState({});
+  const [openMenu, setOpenMenu] = useState("");
+  const close = () => setOpenMenu("");
+  const open = setOpenMenu;
+
+  return (
+    <MenusContext.Provider
+      value={{ position, openMenu, close, open, setPosition }}
+    >
+      {children}
+    </MenusContext.Provider>
+  );
+}
+
+function Toggle({ children, id }) {
+  const { openMenu, close, open, setPosition } = useContext(MenusContext);
+
+  function handleToggle(e) {
+    e.stopPropagation();
+
+    const rect = e.target.closest("button").getBoundingClientRect();
+    setPosition({
+      x: window.innerWidth - rect.width - rect.x,
+      y: rect.y + rect.height + 8,
+    });
+
+    openMenu === "" || openMenu !== id ? open(id) : close();
+  }
+
+  return <StyledToggle onClick={handleToggle}>{children}</StyledToggle>;
+}
+
+function Menu({ children }) {
+  return <StyledMenu>{children}</StyledMenu>;
+}
+
+function List({ children, id }) {
+  const { position, openMenu, close } = useContext(MenusContext);
+  const ref = useOutsideClick(close, false);
+
+  if (openMenu !== id) return null;
+  
+  return (
+    <StyledList position={position} ref={ref}>
+      {children}
+    </StyledList>
+  );
+}
+
+function Button({ children, onClick, disabled = false }) {
+  const { close } = useContext(MenusContext);
+
+  function handleClick() {
+    onClick?.();
+    close();
+  }
+
+  return (
+    <StyledButton disabled={disabled} onClick={handleClick}>
+      {children}
+    </StyledButton>
+  );
+}
+
+Menus.Toggle = Toggle;
+Menus.List = List;
+Menus.Button = Button;
+Menus.Menu = Menu;
+
+export default Menus;

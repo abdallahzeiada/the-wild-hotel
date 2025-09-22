@@ -5,6 +5,7 @@ import Row from "../ui/Row";
 import Button from "../ui/Button";
 import CreateCabinForm from "../features/cabins/CreateCabinForm";
 import AddCabin from "../features/cabins/AddCabin";
+import CabinTableOperations from "../features/cabins/CabinTableOperations";
 const Container = styled.div`
   max-width: 130rem;
   margin: 0 auto;
@@ -14,12 +15,11 @@ const Container = styled.div`
 `;
 
 function Cabins() {
-
   return (
     <Container>
       <Row type="horizontal">
         <Heading as="h1">All cabins</Heading>
-        <p>Filter / Sort</p>
+        <CabinTableOperations />
       </Row>
       <Row type="vertical">
         <CabinTable />
