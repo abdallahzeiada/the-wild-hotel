@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useUser } from "./useUser";
+import { useDemoUser } from "../../hooks/useDemoUser";
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -21,16 +22,39 @@ const Avatar = styled.img`
   border: 2px solid var(--color-grey-50);
 `;
 
+const DemoIndicator = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const DemoLabel = styled.span`
+  font-size: 1.1rem;
+  color: var(--color-yellow-700);
+  font-weight: 600;
+`;
+
 function UserAvatar() {
   const { user } = useUser();
+  const { isDemoUser } = useDemoUser();
   const { fullName, avatar } = user.user_metadata;
+  
+  const displayName = isDemoUser ? "Demo User" : fullName;
+  
   return (
     <StyledUserAvatar>
       <Avatar
         src={avatar || "default-user.jpg"}
-        alt={`Avatar of ${fullName}`}
+        alt={`Avatar of ${displayName}`}
       />
-      <span>{fullName}</span>
+      {isDemoUser ? (
+        <DemoIndicator>
+          <span>{displayName}</span>
+          <DemoLabel>Read-Only Demo</DemoLabel>
+        </DemoIndicator>
+      ) : (
+        <span>{displayName}</span>
+      )}
     </StyledUserAvatar>
   );
 }

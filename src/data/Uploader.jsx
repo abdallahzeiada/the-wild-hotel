@@ -3,6 +3,7 @@ import { isFuture, isPast, isToday } from "date-fns";
 import supabase from "../services/supabase";
 import Button from "../ui/Button";
 import { subtractDates } from "../utils/helpers";
+import { useDemoUser } from "../hooks/useDemoUser";
 
 import { bookings } from "./data-bookings";
 import { cabins } from "./data-cabins";
@@ -102,8 +103,13 @@ async function createBookings() {
 
 function Uploader() {
   const [isLoading, setIsLoading] = useState(false);
+  const { isDemoUser } = useDemoUser();
 
   async function uploadAll() {
+    if (isDemoUser) {
+      alert("Demo users cannot upload data. This would overwrite the demo data!");
+      return;
+    }
     setIsLoading(true);
     // Bookings need to be deleted FIRST
     await deleteBookings();
@@ -119,6 +125,10 @@ function Uploader() {
   }
 
   async function uploadBookings() {
+    if (isDemoUser) {
+      alert("Demo users cannot upload data. This would overwrite the demo data!");
+      return;
+    }
     setIsLoading(true);
     await deleteBookings();
     await createBookings();
@@ -140,13 +150,19 @@ function Uploader() {
     >
       <h3>SAMPLE DATA</h3>
 
-      <Button onClick={uploadAll} disabled={isLoading}>
+      <Button onClick={uploadAll} disabled={isLoading || isDemoUser}>
         Upload ALL
       </Button>
 
-      <Button onClick={uploadBookings} disabled={isLoading}>
+      <Button onClick={uploadBookings} disabled={isLoading || isDemoUser}>
         Upload bookings ONLY
       </Button>
+      
+      {isDemoUser && (
+        <p style={{ color: "#dc2626", fontSize: "12px", marginTop: "4px" }}>
+          Upload disabled in demo mode
+        </p>
+      )}
     </div>
   );
 }

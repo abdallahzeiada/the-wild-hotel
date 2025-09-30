@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+import DemoModeNotification from "./DemoModeNotification";
 import styled from "styled-components";
 
 const StyledLayout = styled.div`
@@ -31,6 +32,7 @@ function AppLayout() {
       <Sidebar />
       <Main>
         <Container>
+          <DemoModeNotification />
           <Outlet />
         </Container>
       </Main>

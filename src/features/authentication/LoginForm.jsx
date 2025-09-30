@@ -10,6 +10,7 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, isLogingIn } = useLogin();
+  
   function handleSubmit(e) {
     e.preventDefault();
     if (!email || !password) return;
@@ -22,6 +23,18 @@ function LoginForm() {
         },
       }
     );
+  }
+
+  function handleDemoLogin() {
+    const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
+    const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
+    
+    if (!demoEmail || !demoPassword) {
+      console.warn('Demo credentials not configured');
+      return;
+    }
+    
+    login({ email: demoEmail, password: demoPassword });
   }
 
   return (
@@ -50,6 +63,15 @@ function LoginForm() {
       <FormRowVertical>
         <Button size="large" disabled={isLogingIn}>
           {isLogingIn ? <SpinnerMini /> : "Login"}
+        </Button>
+        <Button 
+          size="large" 
+          variation="secondary" 
+          type="button" 
+          disabled={isLogingIn}
+          onClick={handleDemoLogin}
+        >
+          Try the Demo
         </Button>
       </FormRowVertical>
     </Form>

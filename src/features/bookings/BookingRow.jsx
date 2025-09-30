@@ -19,6 +19,7 @@ import { useCheckout } from "../check-in-out/useCheckout";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useDeleteBooking } from "./useDeleteBooking";
+import { useDemoUser } from "../../hooks/useDemoUser";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -50,11 +51,9 @@ const Amount = styled.div`
 function BookingRow({
   booking: {
     id: bookingId,
-    created_at,
     startDate,
     endDate,
     numNights,
-    numGuests,
     totalPrice,
     status,
     guests,
@@ -63,6 +62,7 @@ function BookingRow({
 }) {
   const { checkout, isCheckingOut } = useCheckout();
   const { deleteBooking, isDeleting } = useDeleteBooking();
+  const { isDemoUser } = useDemoUser();
   const navigate = useNavigate();
   const guestName = guests?.fullName || "Unknown Guest";
   const email = guests?.email || "No email";
@@ -105,13 +105,13 @@ function BookingRow({
             <Menus.Button onClick={() => navigate(`/bookings/${bookingId}`)}>
               <HiEye /> See details
             </Menus.Button>
-            {status === "unconfirmed" && (
+            {!isDemoUser && status === "unconfirmed" && (
               <Menus.Button onClick={() => navigate(`/checkin/${bookingId}`)}>
                 <HiArrowDownOnSquare />
                 Check in
               </Menus.Button>
             )}
-            {status === "checked-in" && (
+            {!isDemoUser && status === "checked-in" && (
               <Menus.Button
                 onClick={() => checkout(bookingId)}
                 disabled={isCheckingOut}
@@ -120,12 +120,14 @@ function BookingRow({
                 check out
               </Menus.Button>
             )}
-            <Modal.Open opens="delete">
-              <Menus.Button>
-                <HiTrash />
-                Delete booking
-              </Menus.Button>
-            </Modal.Open>
+            {!isDemoUser && (
+              <Modal.Open opens="delete">
+                <Menus.Button>
+                  <HiTrash />
+                  Delete booking
+                </Menus.Button>
+              </Modal.Open>
+            )}
           </Menus.List>
         </Menus.Menu>
         <Modal.Window name="delete">

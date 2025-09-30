@@ -4,6 +4,7 @@ import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
 import { useSettings } from "./useSettings";
 import { useUpdateSettings } from "./useUpdateSettings";
+import { useDemoUser } from "../../hooks/useDemoUser";
 function UpdateSettingsForm() {
   const {
     isLoading,
@@ -16,12 +17,13 @@ function UpdateSettingsForm() {
   } = useSettings();
 
   const { isUpdating, updateSetting } = useUpdateSettings();
+  const { isDemoUser } = useDemoUser();
 
   if (isLoading) return <Spinner />;
 
   function handleUpdate(e, field) {
     const { value } = e.target;
-    if (!value) return;
+    if (!value || isDemoUser) return;
     updateSetting({ [field]: value });
   }
 
@@ -32,7 +34,7 @@ function UpdateSettingsForm() {
           type="number"
           id="min-nights"
           defaultValue={minBookingLength}
-          disabled={isUpdating}
+          disabled={isUpdating || isDemoUser}
           onBlur={(e) => handleUpdate(e, "minBookingLength")}
         />
       </FormRow>
@@ -42,7 +44,7 @@ function UpdateSettingsForm() {
           type="number"
           id="max-nights"
           defaultValue={maxBookingLength}
-          disabled={isUpdating}
+          disabled={isUpdating || isDemoUser}
           onBlur={(e) => handleUpdate(e, "maxBookingLength")}
         />
       </FormRow>
@@ -52,7 +54,7 @@ function UpdateSettingsForm() {
           type="number"
           id="max-guests"
           defaultValue={maxGuestsPerBooking}
-          disabled={isUpdating}
+          disabled={isUpdating || isDemoUser}
           onBlur={(e) => handleUpdate(e, "maxGuestsPerBooking")}
         />
       </FormRow>
@@ -62,7 +64,7 @@ function UpdateSettingsForm() {
           type="number"
           id="breakfast-price"
           defaultValue={breakFastPrice}
-          disabled={isUpdating}
+          disabled={isUpdating || isDemoUser}
           onBlur={(e) => handleUpdate(e, "breakFastPrice")}
         />
       </FormRow>

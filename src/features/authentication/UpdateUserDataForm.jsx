@@ -8,6 +8,7 @@ import Input from "../../ui/Input";
 
 import { useUser } from "./useUser";
 import { useUpdateUser } from "./useUpdateUser";
+import { useDemoUser } from "../../hooks/useDemoUser";
 
 function UpdateUserDataForm() {
   // We don't need the loading state, and can immediately use the user data, because we know that it has already been loaded at this point
@@ -19,8 +20,9 @@ function UpdateUserDataForm() {
   } = useUser();
 
   const { updateUser, isUpdating } = useUpdateUser();
+  const { isDemoUser } = useDemoUser();
 
-  const [fullName, setFullName] = useState(currentFullName);
+  const [fullName, setFullName] = useState(isDemoUser ? "Demo User" : currentFullName);
   const [avatar, setAvatar] = useState(null);
 
   function handleSubmit(e) {
@@ -53,7 +55,7 @@ function UpdateUserDataForm() {
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
           id="fullName"
-          disabled={isUpdating}
+          disabled={isUpdating || isDemoUser}
         />
       </FormRow>
       <FormRow label="Avatar image">
@@ -61,7 +63,7 @@ function UpdateUserDataForm() {
           id="avatar"
           accept="image/*"
           onChange={(e) => setAvatar(e.target.files[0])}
-          disabled={isUpdating}
+          disabled={isUpdating || isDemoUser}
         />
       </FormRow>
       <FormRow>
@@ -73,7 +75,7 @@ function UpdateUserDataForm() {
         >
           Cancel
         </Button>
-        <Button disabled={isUpdating}>Update account</Button>
+        <Button disabled={isUpdating || isDemoUser}>Update account</Button>
       </FormRow>
     </Form>
   );

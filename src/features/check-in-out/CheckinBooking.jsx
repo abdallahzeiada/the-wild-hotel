@@ -17,6 +17,7 @@ import { formatCurrency } from "../../utils/helpers";
 import { useCheckin } from "./useCheckin";
 import { useSettings } from "../settings/useSettings";
 import { useNavigate } from "react-router-dom";
+import { useDemoUser } from "../../hooks/useDemoUser";
 
 const Box = styled.div`
   /* Box */
@@ -31,6 +32,7 @@ function CheckinBooking() {
   const { booking = {}, isLoading } = useBooking();
   const [confirmPaid, setConfirmPaid] = useState(false);
   const { checkin, isCheckingIn } = useCheckin();
+  const { isDemoUser } = useDemoUser();
   useEffect(() => setConfirmPaid(booking?.isPaid ?? false), [booking]);
 
   const [addBreakfast, setAddBreakfast] = useState(false);
@@ -120,7 +122,7 @@ function CheckinBooking() {
         </Checkbox>
       </Box>
       <ButtonGroup>
-        <Button onClick={handleCheckin} disabled={!confirmPaid || isCheckingIn}>
+        <Button onClick={handleCheckin} disabled={!confirmPaid || isCheckingIn || isDemoUser}>
           Check in booking #{bookingId}
         </Button>
         <Button variation="secondary" onClick={moveBack}>
