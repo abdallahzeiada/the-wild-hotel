@@ -94,7 +94,7 @@ _Comprehensive booking management interface_
 
 _Streamlined guest check-in workflow_
 
-#### Live Demo: https://the-wild-hotel-jet.vercel.app/
+#### Live Demo: https://the-wild-booking-system.netlify.app/
 
 ## 🛠 Tech Stack
 
