@@ -10,7 +10,7 @@ A comprehensive hotel management system built with React and Supabase, designed 
 ## 📋 Table of Contents
 
 - [Features](#-features)
-- [Demo](#-demo & screenshots)
+- [Demo](#-demo-&-screenshots)
 - [Tech Stack](#-tech-stack)
 - [Usage](#-usage)
 - [Project Structure](#-project-structure)
